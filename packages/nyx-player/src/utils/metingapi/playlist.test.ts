@@ -54,6 +54,8 @@ describe('playList', () => {
 
     globalThis.fetch = vi.fn(() =>
       Promise.resolve({
+        ok: true,
+        status: 200,
         json: () => Promise.resolve(mockSongs),
       }),
     ) as any
@@ -62,6 +64,10 @@ describe('playList', () => {
     expect(playlist.playlist).toEqual(mockSongs)
     expect(globalThis.fetch).toHaveBeenCalledWith(
       `${METING_API}?type=playlist&id=123456&server=netease`,
+      expect.objectContaining({
+        headers: { Accept: 'application/json' },
+        signal: expect.any(Object),
+      }),
     )
   })
 
